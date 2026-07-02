@@ -562,7 +562,8 @@
   let history = [];
   let future = [];
   let selectedIndex = -1;
-  let sheetWebhookUrl = '';
+  const DEFAULT_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbz4mxINNRbiQU-QQxm4SWmYxv_B0U4ObO_ixwpM5IwMkTK0BxnasIO4xlwMU71UJhw70g/exec';
+  let sheetWebhookUrl = DEFAULT_SHEET_WEBHOOK_URL;
 
   const sheetModalBackdrop = document.getElementById('sheetModalBackdrop');
   const sheetUrlInput = document.getElementById('sheetUrlInput');
@@ -577,8 +578,9 @@
   (async function loadSheetUrl(){
     try{
       const res = await window.storage.get('sheet_webhook_url', false);
-      if(res && res.value){ sheetWebhookUrl = res.value; sheetUrlInput.value = res.value; }
-    }catch(err){ /* nothing saved yet */ }
+      if(res && res.value){ sheetWebhookUrl = res.value; }
+    }catch(err){ /* nothing saved locally, keep the built-in default */ }
+    sheetUrlInput.value = sheetWebhookUrl;
     refreshSheetStatus();
   })();
 
